@@ -3,7 +3,7 @@ import requests
 import json
 from typing import Dict, List, Any
 import logging
-from property_queries import PROPERTY_BY_FSID_QUERY
+from .property_queries import PROPERTY_BY_FSID_QUERY
 
 _LOGGER = logging.getLogger(__name__)
 
