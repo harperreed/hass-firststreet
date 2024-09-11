@@ -1,0 +1,11 @@
+{
+  "domain": "firststreet",
+  "name": "FirstStreet",
+  "config_flow": true,
+  "documentation": "https://github.com/yourusername/home-assistant-firststreet",
+  "dependencies": [],
+  "codeowners": ["@yourusername"],
+  "requirements": ["requests"],
+  "iot_class": "cloud_polling",
+  "version": "0.2.0"
+}
