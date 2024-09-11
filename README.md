@@ -1,6 +1,6 @@
 # FirstStreet Integration for Home Assistant 🌍💧🔥
 
-Welcome to the **FirstStreet Integration for Home Assistant**! This project allows users to monitor risk factors associated with environmental conditions, such as flooding, fires, heatwaves, winds, and air quality, based on property location. All data is sourced from the FirstStreet API.
+Welcome to the **FirstStreet Integration for Home Assistant**! This project enables users to monitor risk factors associated with environmental conditions such as flooding, fires, heatwaves, winds, and air quality, all based on property location. The data is sourced directly from the FirstStreet API.
 
 ## Summary of Project 📜
 
@@ -11,7 +11,7 @@ This integration connects Home Assistant with the FirstStreet API, providing fiv
 - **Wind** 🍃
 - **Air Quality** 🌫️
 
-With these sensors, users can access real-time risk assessments for their properties, enabling better decision-making when it comes to asset protection and personal safety.
+With these sensors, users gain real-time risk assessments for their properties, empowering better decision-making for asset protection and personal safety.
 
 ## How to Use ⚙️
 
@@ -38,14 +38,14 @@ With these sensors, users can access real-time risk assessments for their proper
 
 ### Usage 📊
 
-Upon successful setup, you will have access to the following sensors:
+Once successfully set up, the following sensors will be available on your Home Assistant dashboard:
 - **FirstStreet Flood:** Displays flood risk factors.
 - **FirstStreet Fire:** Displays fire risk factors.
 - **FirstStreet Heat:** Displays heat-related risk factors.
 - **FirstStreet Wind:** Displays wind risk factors.
 - **FirstStreet Air:** Displays air quality risk factors.
 
-The risk factors provided by each sensor will help you evaluate the environmental risks related to your property. 
+These sensors will provide vital data to assess environmental risks related to your property.
 
 ## Tech Info 🛠️
 
@@ -55,26 +55,31 @@ The risk factors provided by each sensor will help you evaluate the environmenta
 - **Key Dependencies:** 
   - `requests`
 - **Core Functionality:**
-  - Integrates with the FirstStreet API to pull risk factor data.
-  - Utilizes Home Assistant’s custom component structure for seamless integration.
-  - Supports data retrieval and JSON parsing for various environmental risks.
+  - Integrates with the FirstStreet API to retrieve risk factor data.
+  - Utilizes Home Assistant’s custom component structure for smooth integration.
+  - Supports data retrieval and JSON parsing across various environmental risks.
 
 ### Repository Structure 📁
 ```plaintext
-hacs/
+hass-firststreet/
+├── LICENSE
 ├── README.md
-├── __init__.py
-├── config_flow.py
-├── const.py
-├── firststreet_api.py
+├── custom_components
+│   └── firststreet
+│       ├── __init__.py
+│       ├── config_flow.py
+│       ├── const.py
+│       ├── firststreet_api.py
+│       ├── manifest.json
+│       ├── property_queries.py
+│       ├── sensor.py
+│       └── test_firststreet_api.py
 ├── hacs.json
-├── manifest.json
-├── property_queries.py
-└── sensor.py
+├── info.md
 ```
 
 ### Support & Contributions 🤝
 
-For issues, suggestions, or feature requests, please use the [GitHub issue tracker](https://github.com/harperreed/home-assistant-firststreet/issues). Your contributions are welcome! Feel free to open pull requests for enhancements or fixes.
+For issues, suggestions, or feature requests, please use the [GitHub issue tracker](https://github.com/harperreed/hass-firststreet/issues). Your contributions are welcome! Feel free to open pull requests for enhancements or fixes.
 
-Thank you for using the FirstStreet Integration! Let's help make our homes safer one sensor at a time! 🏡✨
+Thank you for choosing the FirstStreet Integration! Together, we can make our homes safer, one sensor at a time! 🏡✨
