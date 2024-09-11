@@ -4,6 +4,7 @@ import json
 from typing import Dict, List, Any
 import logging
 from property_queries import PROPERTY_BY_FSID_QUERY
+from pprint import pprint
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -50,6 +51,7 @@ class FirstStreetAPI:
             "query": PROPERTY_BY_FSID_QUERY,
             "variables": variables
         }
+        _LOGGER.debug("API Request: %s", json.dumps(payload, indent=2))
         
         try:
             response = self.session.post(endpoint, json=payload)
