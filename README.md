@@ -20,7 +20,7 @@ With these sensors, users can access real-time risk assessments for their proper
 1. **HACS (Highly Recommended):**
    - Ensure you have [HACS](https://hacs.xyz) installed in your Home Assistant.
    - Go to **HACS > Integrations > 3 dots > Custom repositories**.
-   - Add this repository URL: `https://github.com/harperreed/home-assistant-firststreet` and select **Integration** for the category.
+   - Add this repository URL: `https://github.com/harperreed/hass-firststreet` and select **Integration** for the category.
    - Click **Install**.
    - Restart Home Assistant for the changes to take effect.
 
