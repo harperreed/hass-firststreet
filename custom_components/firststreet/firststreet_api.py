@@ -3,7 +3,7 @@ import requests
 import json
 from typing import Dict, List, Any
 import logging
-from .property_queries import PROPERTY_BY_FSID_QUERY
+from property_queries import PROPERTY_BY_FSID_QUERY
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -77,21 +77,20 @@ class FirstStreetAPI:
 
     def parse_flood_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Parse flood-related data from the API response."""
-        flood_data = data['property']['flood']
+        flood_data = data['flood']
         return {
             'flood_factor': flood_data['floodFactor'],
             'risk_direction': flood_data['riskDirection'],
             'insurance_requirement': flood_data['insuranceRequirement'],
             'adaptation_count': flood_data['adaptationConnection']['totalCount'],
             'probability': flood_data['probability'],
-            'insurance_quotes': flood_data['insuranceQuotes']['rates'] if flood_data['insuranceQuotes'] else None,
             'historic_events': flood_data['historic'],
             'insights': flood_data['insights']
         }
 
     def parse_fire_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Parse fire-related data from the API response."""
-        fire_data = data['property']['fire']
+        fire_data = data['fire']
         return {
             'fire_factor': fire_data['fireFactor'],
             'risk_direction': fire_data['riskDirection'],
@@ -106,7 +105,7 @@ class FirstStreetAPI:
 
     def parse_heat_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Parse heat-related data from the API response."""
-        heat_data = data['property']['heat']
+        heat_data = data['heat']
         return {
             'heat_factor': heat_data['heatFactor'],
             'hot_temperature': heat_data['hotTemperature'],
@@ -120,7 +119,7 @@ class FirstStreetAPI:
 
     def parse_wind_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Parse wind-related data from the API response."""
-        wind_data = data['property']['wind']
+        wind_data = data['wind']
         return {
             'wind_factor': wind_data['windFactor'],
             'factor_scale': wind_data['factorScale'],
@@ -137,7 +136,7 @@ class FirstStreetAPI:
 
     def parse_air_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Parse air quality-related data from the API response."""
-        air_data = data['property']['air']
+        air_data = data['air']
         return {
             'air_factor': air_data['airFactor'],
             'factor_scale': air_data['factorScale'],
@@ -161,11 +160,12 @@ class FirstStreetAPI:
         :raises FirstStreetAPIError: If the API returns an error or unexpected data
         """
         raw_data = self.get_property_data(fsid, building_id)
-        
-        if 'data' not in raw_data or 'property' not in raw_data['data']:
-            raise FirstStreetAPIError("Unexpected API response structure")
 
-        property_data = raw_data['data']['property']
+        
+        # if 'property' not in raw_data:
+        #     raise FirstStreetAPIError("Unexpected API response structure: 'property' key missing", str(raw_data)[:100])
+        
+        property_data = raw_data
         
         return {
             'flood': self.parse_flood_data(property_data),
@@ -174,3 +174,61 @@ class FirstStreetAPI:
             'wind': self.parse_wind_data(property_data),
             'air': self.parse_air_data(property_data)
         }
+        
+# Usage example
+if __name__ == "__main__":
+    # Initialize the FirstStreetAPI
+       api = FirstStreetAPI()
+   
+       # Example FSID (FirstStreet ID) for a property
+       fsid = 81767347  # Replace with a real FSID when testing
+   
+       try:
+           # Fetch all risk data for the property
+           risk_data = api.get_all_risk_data(fsid)
+   
+           # Display the risk data
+           print(f"Risk Data for Property FSID: {fsid}")
+           print("=" * 40)
+   
+           for risk_type, data in risk_data.items():
+               print(f"\n{risk_type.upper()} Risk:")
+               print("-" * 20)
+               
+               if risk_type == 'flood':
+                   print(f"Flood Factor: {data['flood_factor']}")
+                   print(f"Risk Direction: {data['risk_direction']}")
+                   print(f"Insurance Requirement: {data['insurance_requirement']}")
+                   print(f"Adaptation Count: {data['adaptation_count']}")
+               elif risk_type == 'fire':
+                   print(f"Fire Factor: {data['fire_factor']}")
+                   print(f"Risk Direction: {data['risk_direction']}")
+                   print(f"Defensible Space: {data['defensible_space']}")
+                   print(f"USFS Relative Risk: {data['usfs_relative_risk']}")
+               elif risk_type == 'heat':
+                   print(f"Heat Factor: {data['heat_factor']}")
+                   print(f"Hot Temperature: {data['hot_temperature']}")
+                   print(f"Anomaly Temperature: {data['anomaly_temperature']}")
+               elif risk_type == 'wind':
+                   print(f"Wind Factor: {data['wind_factor']}")
+                   print(f"Factor Scale: {data['factor_scale']}")
+                   print(f"Risk Direction: {data['risk_direction']}")
+                   print(f"Has Tornado Risk: {data['has_tornado_risk']}")
+                   print(f"Has Thunderstorm Risk: {data['has_thunderstorm_risk']}")
+                   print(f"Has Cyclone Risk: {data['has_cyclone_risk']}")
+               elif risk_type == 'air':
+                   print(f"Air Factor: {data['air_factor']}")
+                   print(f"Factor Scale: {data['factor_scale']}")
+                   print(f"Risk Direction: {data['risk_direction']}")
+                   print(f"TRI Nearby: {data['tri_nearby']}")
+
+   
+           # Optional: Uncomment the following line to print the full risk data structure
+           # pprint(risk_data)
+   
+       except FirstStreetAPIError as e:
+           _LOGGER.error(f"API Error: {e.message}")
+           if e.details:
+               _LOGGER.error(f"Error details: {e.details}")
+       except Exception as e:
+           _LOGGER.exception(f"An unexpected error occurred: {str(e)}")
